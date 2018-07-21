@@ -2,7 +2,7 @@ package com.vala.demo;
 
 import java.sql.*;
 
-public class Repository {
+class Repository {
 
     private static final String DB_DRIVER = "org.h2.Driver";
     private static final String DB_URL = "jdbc:h2:~/vala_demo_db";
@@ -22,22 +22,29 @@ public class Repository {
         initDatabase();
     }
 
-    public int getCount() {
+    int getCount() {
         try (Connection conn = DriverManager.getConnection(DB_URL);
             Statement statement = conn.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_COUNT);
-            resultSet.next();
+            if (!resultSet.next()) {
+                throw new RuntimeException("Database is corrupted");
+            }
             return resultSet.getInt(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void incrementCount() {
+    int incrementCount() {
         try (Connection conn = DriverManager.getConnection(DB_URL);
             Statement statement = conn.createStatement()) {
             statement.executeUpdate(SQL_UPDATE_COUNT);
-            conn.commit();
+
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_COUNT);
+            if (!resultSet.next()) {
+                throw new RuntimeException("Database is corrupted");
+            }
+            return resultSet.getInt(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -53,7 +60,8 @@ public class Repository {
             }
 
             if (isEmptyTable) {
-                try (PreparedStatement statement = conn.prepareStatement(SQL_INSERT_COUNT)) {
+                try (PreparedStatement statement =
+                         conn.prepareStatement(SQL_INSERT_COUNT)) {
                     statement.setInt(1, 0);
                     statement.executeUpdate();
                 }

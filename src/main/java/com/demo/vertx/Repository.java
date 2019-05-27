@@ -1,11 +1,11 @@
-package com.vala.demo;
+package com.demo.vertx;
 
 import java.sql.*;
 
 class Repository {
 
     private static final String DB_DRIVER = "org.h2.Driver";
-    private static final String DB_URL = "jdbc:h2:~/vala_demo_db";
+    private static final String DB_URL = "jdbc:h2:~/vertx_demo_db";
 
     private static final String SQL_CREATE_TABLE = "create table if not exists counter (click_count int)";
     private static final String SQL_SELECT_COUNT = "select click_count from counter";

@@ -1,4 +1,4 @@
-# Vala Demo Vertx
+# Vertx - Server Demo
 
 ![Clients Snapshot](clients-snapshot.jpg?raw=true "Clients Snapshot")
 

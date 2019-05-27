@@ -1,4 +1,4 @@
-package com.vala.demo;
+package com.demo.vertx;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
